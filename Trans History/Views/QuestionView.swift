@@ -7,16 +7,15 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct QuestionView: View {
     @State private var showingSheet = false
     @State private var selectedValue = 0
     
     let question = Question(questionText: "What year was Street Transvestite Action Revolutionaries founded?", possibleAnswers: ["1970", "1972", "1974", "1976"], correctAnswerIndex: 0)
     
-    let mainColor = Color(red: 91/255, green: 206/255, blue: 250/255)
     var body: some View {
         ZStack{
-            mainColor.ignoresSafeArea()
+            GameColor.main.ignoresSafeArea()
             VStack {
                 Text("1 / 10")
                     .font(.callout)
@@ -53,6 +52,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        QuestionView()
     }
 }
