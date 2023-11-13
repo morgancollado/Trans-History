@@ -1,57 +1,41 @@
 //
-//  ContentView.swift
+//  QuestionView.swift
 //  Trans History
 //
-//  Created by Morgan Collado on 10/25/23.
+//  Created by Morgan Collado on 11/11/23.
 //
 
 import SwiftUI
 
 struct QuestionView: View {
-    @State private var showingSheet = false
-    @State private var selectedValue = 0
     
-    let question = Question(questionText: "What year was Street Transvestite Action Revolutionaries founded?", possibleAnswers: ["1970", "1972", "1974", "1976"], correctAnswerIndex: 0)
-    
-    var body: some View {
-        ZStack{
-            GameColor.main.ignoresSafeArea()
-            VStack {
-                Text("1 / 10")
-                    .font(.callout)
-                    .multilineTextAlignment(.leading)
-                    .padding()
-                Text(question.questionText)
-                    .font(.largeTitle)
-                    .bold()
-                    .multilineTextAlignment(.leading)
-                Spacer()
-                HStack {
-                    ForEach(0..<question.possibleAnswers.count) { answerIndex in
-                        Button(action: {
-                            print("Tapped on option with the text: \(question.possibleAnswers[answerIndex])")
-                             showingSheet.toggle()
-                             selectedValue = answerIndex
-                          }, label: {
-                            ChoiceTextView(choiceText: question.possibleAnswers[answerIndex])
-                          })
-                    }
-                }
-            }
+  @EnvironmentObject var viewModel: GameViewModel
+  let question: Question
+  
+  var body: some View {
+    VStack {
+      Spacer()
+      Text(question.questionText)
+        .font(.largeTitle)
+        .bold()
+        .multilineTextAlignment(.leading)
+      Spacer()
+      HStack {
+        ForEach(0..<question.possibleAnswers.count) { answerIndex in
+          Button(action: {
+            print("Tapped on option with the text: \(question.possibleAnswers[answerIndex])")
+              viewModel.makeGuess(atIndex: answerIndex)
+          }) {
+            ChoiceTextView(choiceText: question.possibleAnswers[answerIndex])
+                  .background(viewModel.color(forOptionIndex: answerIndex)) 
+          }
         }
-        .sheet(isPresented: $showingSheet, content: {
-            Text(selectedValue == question.correctAnswerIndex ? "correct" : "incorrect")
-            Button(action: {
-                showingSheet.toggle()
-            }, label: {
-                ChoiceTextView(choiceText: "dismiss")
-            })
-        })
+      }
     }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        QuestionView()
-    }
+      if viewModel.guessWasMade {
+               Button(action: { viewModel.displayNextScreen() }) {
+                   BottomTextView(str: "Next")
+               }
+           }
+  }
 }

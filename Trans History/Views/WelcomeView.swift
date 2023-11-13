@@ -25,7 +25,7 @@ struct WelcomeView: View {
                     }
                     Spacer()
                     NavigationLink(
-                        destination: QuestionView(),
+                        destination: GameView(),
                         label: {
                             BottomTextView(str: "Okay let's go!")
                         })
