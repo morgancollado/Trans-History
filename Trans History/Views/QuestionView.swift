@@ -9,6 +9,7 @@ import SwiftUI
 
 struct QuestionView: View {
     
+  @State private var isSheetPresented = false
   @EnvironmentObject var viewModel: GameViewModel
   let question: Question
   
@@ -20,6 +21,17 @@ struct QuestionView: View {
         .bold()
         .multilineTextAlignment(.leading)
       Spacer()
+        if viewModel.guessWasMade {
+                Button(action: {
+                  isSheetPresented.toggle()
+                }) {
+                  Text("Learn more")
+                }
+                .sheet(isPresented: $isSheetPresented) {
+                  // Your sheet content goes here
+                    LearnMoreView(learnMoreText: question.learnMoreText)
+                }
+              }
       HStack {
         ForEach(0..<question.possibleAnswers.count) { answerIndex in
           Button(action: {
@@ -38,4 +50,14 @@ struct QuestionView: View {
                }
            }
   }
+}
+
+struct QuestionView_Previews: PreviewProvider {
+    static var previews: some View {
+        let question = Question(questionText: "What year was Street Transvestite Action Revolutionaries founded?", possibleAnswers: ["1970", "1972", "1974", "1976"], correctAnswerIndex: 0, learnMoreText: "STAR was able to purchase a house that they used to shelter homeless queer and trans youth.")
+        let viewModel = GameViewModel() // Initialize your GameViewModel here if needed
+
+        return QuestionView(question: question)
+            .environmentObject(viewModel)
+    }
 }
