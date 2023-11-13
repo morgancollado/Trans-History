@@ -18,8 +18,6 @@ struct ChoiceTextView: View {
             .multilineTextAlignment(.center)
             .padding()
             .foregroundColor(.white)
-            .background(GameColor.accent)
-            .clipShape(Capsule())
     }
 }
 
