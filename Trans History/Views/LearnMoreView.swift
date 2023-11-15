@@ -13,6 +13,8 @@ struct LearnMoreView: View {
     var body: some View {
         Text(learnMoreText)
             .padding()
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(GameColor.accent)
     }
 }
 
